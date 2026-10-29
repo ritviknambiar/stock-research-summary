@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Learning from the Stock Market</title>
-<meta name="description" content="An independent high school research project by Ritvik: what really moves stock prices, and what honest research and reflection teach about making better decisions.">
+<meta name="description" content="An independent high school research project by Ritvik: a study of what moves stock prices, based on research he shared with his father. Ritvik did not trade. Educational only, not investment advice.">
 <style>
   :root {
     --bg: #fbfaf7;
@@ -185,6 +185,13 @@
   .takeaway h2 { color: var(--accent-ink); font-size: 24px; }
   .takeaway p { font-size: 18px; }
 
+  .notice { display: flex; gap: 10px; align-items: flex-start; background: var(--amber-soft); border: 1px solid color-mix(in srgb, var(--amber) 45%, transparent); border-radius: 10px; padding: 12px 16px; margin: 0 0 22px; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Helvetica, Arial, sans-serif; font-size: 15px; line-height: 1.5; }
+  .notice .ico { font-weight: 700; flex: none; width: 22px; height: 22px; border-radius: 50%; background: var(--amber); color: #1c1d21; text-align: center; line-height: 22px; font-size: 14px; margin-top: 1px; }
+  .notice a { font-weight: 600; }
+  .disclaimer { background: var(--surface); border: 1px solid var(--line); border-left: 4px solid var(--amber); border-radius: 10px; padding: 22px 24px 10px; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Helvetica, Arial, sans-serif; font-size: 15px; }
+  .disclaimer h2 { font-size: 24px; }
+  .disclaimer ul { padding-left: 20px; margin: 0 0 14px; }
+  .disclaimer li { margin-bottom: 8px; line-height: 1.55; }
   footer { border-top: 1px solid var(--line); padding: 26px 0 40px; font-size: 13px; color: var(--muted); }
 
   @media print {
@@ -205,6 +212,7 @@
       <a href="#findings">Findings</a>
       <a href="#learnings">Learnings</a>
       <a href="#formula">Formula</a>
+      <a href="#disclaimer">Disclaimer</a>
     </nav>
   </div>
 </div>
@@ -212,28 +220,29 @@
 <main class="wrap" id="top">
 
   <header class="hero">
+    <p class="notice" role="note"><span class="ico" aria-hidden="true">!</span><span><strong>Research only. I did not trade.</strong> I shared my research with my father, who made all investment decisions in his own account. Nothing here is investment advice. <a href="#disclaimer">Read the full disclaimer</a>.</span></p>
     <div class="eyebrow">Independent High School Research Project</div>
     <h1>Learning from the Stock Market</h1>
-    <p class="lede">What really moves stock prices, and what can honest research and reflection teach me about making better decisions?</p>
+    <p class="lede">What really moves stock prices, and what can honest research and reflection teach me about thinking more carefully?</p>
     <div class="byline">By Ritvik</div>
 
     <div class="stats" aria-label="At a glance">
       <div class="stat"><div class="num">42</div><div class="lbl">companies tracked across 5 sectors, plus a watchlist of 103</div></div>
-      <div class="stat"><div class="num">19</div><div class="lbl">trades my dad made using my analysis, plus 4 other holdings</div></div>
-      <div class="stat"><div class="num">13.4%</div><div class="lbl">typical pick return, vs 12.7% for the Nifty 50 over the same 6 months</div></div>
+      <div class="stat"><div class="num">19</div><div class="lbl">trades my father decided to make in his own account, informed by my research, plus 4 other holdings</div></div>
+      <div class="stat"><div class="num">13.4%</div><div class="lbl">typical (median) trade return, vs 12.7% for the Nifty 50 over the same 6 months</div></div>
       <div class="stat"><div class="num">4 of 23</div><div class="lbl">outcomes made money for the wrong reason</div></div>
     </div>
   </header>
 
   <section class="story prose" aria-label="Introduction">
     <p>My introduction to financial markets didn't begin in a classroom. It began through conversations with my father, who would explain how stock markets work and why prices change. What first looked like a world of numbers soon became a puzzle: why could a company's share price fall despite strong results, and why might investors react differently to the same economic news? I came to see that understanding markets meant understanding expectations, incentives and human behaviour, not just following prices.</p>
-    <p>Curiosity turned into exploration, and I started small. Instead of trading myself, I researched companies and shared my analysis with my dad as input for his own investment decisions. To organise this, I built an Excel evaluation tracker to follow market trends, record outcomes and look for patterns. Along the way I became interested in how expectations about future growth, interest rates and uncertainty shape valuations. Most importantly, I learned to question what the numbers appeared to suggest rather than accepting them at face value.</p>
+    <p>Curiosity turned into exploration, and I started small. I did not trade myself and I do not have a trading account. Instead, I researched companies and shared my analysis with my father as one input he could consider; every investment decision was his own. To organise this, I built an Excel evaluation tracker to follow market trends, record outcomes and look for patterns. Along the way I became interested in how expectations about future growth, interest rates and uncertainty shape valuations. Most importantly, I learned to question what the numbers appeared to suggest rather than accepting them at face value.</p>
   </section>
 
   <section id="research">
     <div class="prose">
       <h2>What I set out to research</h2>
-      <p>I wanted to understand what really moves stock prices, and to learn from real outcomes rather than from theory alone. My goal was never to beat the market. It was to become a more careful, more honest analyst, so that the inputs I gave my dad were better reasoned each time.</p>
+      <p>I wanted to understand what really moves stock prices, and to learn from real outcomes rather than from theory alone. My goal was never to beat the market. It was to become a more careful, more honest analyst, so that the research I shared with my father was better reasoned each time.</p>
       <p>The question I kept coming back to was: <strong>when a stock went up or down, was it because my reasoning was right, or because of something else?</strong></p>
     </div>
   </section>
@@ -246,9 +255,9 @@
         <tbody>
           <tr><td class="step">1. Choose</td><td>Built a focused list of 42 companies across 5 sectors (Railways, Technology, Mining &amp; Metals, Banking, Manufacturing), with a wider watchlist of 103 for future ideas.</td></tr>
           <tr><td class="step">2. Track</td><td>Recorded each stock's price and 52-week high and low in my Excel evaluation tracker. I used the midpoint of that range as a simple &ldquo;fair price&rdquo; marker to judge whether a stock looked cheap or expensive compared with its recent past.</td></tr>
-          <tr><td class="step">3. Advise</td><td>Shared my analysis with my dad. Over about six months in 2024 he made 19 trades using my inputs, and I recorded each buy price, sell price and sale date.</td></tr>
+          <tr><td class="step">3. Share</td><td>Shared my research with my father for discussion. Over about six months in 2024 he made 19 trades in his own account, deciding for himself whether and how to use my research. I recorded each buy price, sell price and sale date for my analysis.</td></tr>
           <tr><td class="step">4. Compare</td><td>Measured each trade's return and used the Nifty 50, India's main market index, as a yardstick for how the market as a whole moved.</td></tr>
-          <tr><td class="step">5. Reflect</td><td>Looked back at every outcome to work out what actually moved the price, and what I would suggest differently next time.</td></tr>
+          <tr><td class="step">5. Reflect</td><td>Looked back at every outcome to work out what actually moved the price, and what I would research differently next time.</td></tr>
         </tbody>
       </table>
     </div>
@@ -301,7 +310,7 @@
       <div class="cell cC"><b>C</b> made money, but for the wrong reason</div>
       <div class="cell cD"><b>D</b> a real research mistake</div>
     </div>
-    <p class="prose">This stopped me from confusing &ldquo;we made money&rdquo; with &ldquo;my analysis was good&rdquo;.</p>
+    <p class="prose">This stopped me from confusing &ldquo;the trade made money&rdquo; with &ldquo;my analysis was good&rdquo;.</p>
   </section>
 
   <section id="findings">
@@ -315,9 +324,9 @@
 
     <figure>
       <div class="fig">
-        <div class="fig-title">6-month view (Mar&ndash;Aug 2024): trades based on my analysis vs Nifty 50</div>
+        <div class="fig-title">6-month view (Mar&ndash;Aug 2024): my father&rsquo;s trades informed by my research vs Nifty 50</div>
         <div class="fig-sub">Return (%), cumulative</div>
-        <div class="chart-scroll"><svg viewBox="0 0 760 330" role="img" aria-label="Line chart. Trades based on my analysis: 0% at end of February and March, 14.4% in April and May, 15.8% in June, 15.6% in July, 9.6% in August. Nifty 50: 0%, 1.6%, 2.8%, 2.5%, 9.2%, 13.5%, 12.7%. Median closed trade 13.4%.">
+        <div class="chart-scroll"><svg viewBox="0 0 760 330" role="img" aria-label="Line chart. My father's trades informed by my research: 0% at end of February and March, 14.4% in April and May, 15.8% in June, 15.6% in July, 9.6% in August. Nifty 50: 0%, 1.6%, 2.8%, 2.5%, 9.2%, 13.5%, 12.7%. Median closed trade 13.4%.">
           <!-- plot area x: 60..620, y: 20..280 ; y range -1..17 -->
           <g stroke="var(--grid)" stroke-width="1">
             <line x1="60" x2="620" y1="265.6" y2="265.6"/>
@@ -363,13 +372,13 @@
           </g>
         </svg></div>
         <div class="legend">
-          <span><i style="background:var(--navy)"></i>Trades based on my analysis (gain &divide; money invested, cumulative)</span>
+          <span><i style="background:var(--navy)"></i>My father&rsquo;s trades informed by my research (gain &divide; money invested, cumulative)</span>
           <span><i style="background:var(--gray)"></i>Nifty 50 (change since 29 Feb 2024)</span>
           <span><i style="background:var(--sky)"></i>Typical (median) closed trade</span>
         </div>
         <div class="source">Source: my Excel evaluation tracker (2024 &ndash; May 2026).</div>
       </div>
-      <figcaption class="caption">Trades based on my analysis compared with the Nifty 50 over six months in 2024. A mixed result: the typical trade roughly matched the Nifty, but total money invested lagged it. Several unsold holdings were at a loss.</figcaption>
+      <figcaption class="caption">My father&rsquo;s trades, informed by my research, compared with the Nifty 50 over six months in 2024. A mixed result: the typical trade roughly matched the Nifty, but total money invested lagged it. Several unsold holdings were at a loss.</figcaption>
     </figure>
 
     <div class="insight">
@@ -475,9 +484,9 @@
               <div class="c"><div class="v">10</div><div class="f" style="height:100%;background:var(--green)"></div></div>
             </div>
             <div class="vlabels">
-              <div>Kept rising &gt;10% after I sold</div>
+              <div>Kept rising &gt;10% after the sale</div>
               <div>Roughly flat</div>
-              <div>Fell &gt;5% after I sold</div>
+              <div>Fell &gt;5% after the sale</div>
             </div>
           </div>
         </div>
@@ -489,20 +498,20 @@
 
   <section id="learnings">
     <h2>My learnings</h2>
-    <p class="prose">These are my working hypotheses from looking back at the results:</p>
+    <p class="prose">These are my working hypotheses from looking back at the results. They are personal reflections for my own learning, not recommendations for anyone else.</p>
     <ol class="learnings">
-      <li><strong>Diversify the money, not just the number of stocks.</strong>Keep any single stock to a small share (around 10%) of the portfolio, and spread across sectors, so one mistake cannot sink everything.</li>
-      <li><strong>Set a stop-loss before buying.</strong>Decide in advance the price at which to sell or re-check a falling stock (for example 15% below the buying price), instead of hoping it comes back. Some holdings kept falling with no plan to act.</li>
-      <li><strong>Plan the exit, not just the entry.</strong>Set a target price and a review date when buying. Several stocks rose a lot after they were sold, and others fell sharply afterwards; a plan makes this less of a guess.</li>
-      <li><strong>A profit does not prove the research was right.</strong>Ask why a stock moved. Gains from rumours or hype do not repeat reliably.</li>
+      <li><strong>Diversification is about the money, not just the number of stocks.</strong>In this data, keeping any single stock to a small share (around 10%) of the portfolio, and spread across sectors, would have stopped one result from dominating everything.</li>
+      <li><strong>A plan for falling prices matters.</strong>Deciding in advance at what level a falling stock gets re-checked (for example 15% below the buying price) is a common risk-management idea that I want to study further. Some holdings kept falling with no plan to act.</li>
+      <li><strong>The exit matters as much as the entry.</strong>Writing down a target price and a review date at the start would make outcomes easier to judge. Several stocks rose a lot after they were sold, and others fell sharply afterwards; a plan makes this less of a guess.</li>
+      <li><strong>A profit does not prove the research was right.</strong>It is important to ask why a stock moved. Gains from rumours or hype do not repeat reliably.</li>
       <li><strong>Watch the whole sector, not just the company.</strong>Sector trends drove more of the results than any other single reason; whole groups of government-owned banks, power and railway stocks rose together.</li>
-      <li><strong>Write the idea down before buying.</strong>A written reason makes it possible to judge honestly afterwards, and protects against remembering being more right than I was.</li>
+      <li><strong>Write the reasoning down first.</strong>A written reason makes it possible to judge honestly afterwards, and protects against remembering being more right than I was.</li>
     </ol>
   </section>
 
   <section id="formula">
     <h2>Turning my learnings into a simple formula</h2>
-    <p class="prose">To make my inputs to my dad more consistent, I turned these learnings into a simple checklist score and a few rules that go into my Excel evaluation tracker. It does not predict the future exactly; it helps decide which ideas deserve attention, how much to put in, and when to act.</p>
+    <p class="prose">To make my research more consistent, I turned these learnings into a simple checklist score and a few rules in my Excel evaluation tracker. It is a learning exercise: it does not predict the future, has not been tested, and is not a recommendation to buy or sell anything. It helps me decide which ideas deserve more research.</p>
 
     <h3>Step 1: Idea Score (out of 10)</h3>
     <div class="table-wrap">
@@ -520,28 +529,44 @@
 
     <h3>Step 2: The rules</h3>
     <div class="formula">
-      <div><b>Expected upside</b> = (Mid-range marker &minus; Current price) &divide; Current price</div>
-      <div><b>Position size</b> = (Idea Score &divide; 10) &times; 10% of the portfolio</div>
-      <div><b>Stop-loss</b> = Buying price &times; 0.85 (sell or re-check if it falls 15%)</div>
+      <div><b>Gap to mid-range marker</b> = (Mid-range marker &minus; Current price) &divide; Current price</div>
+      <div><b>Illustrative weight (hypothetical)</b> = (Idea Score &divide; 10) &times; 10% of a sample portfolio</div>
+      <div><b>Review level</b> = Buying price &times; 0.85 (re-check the research if the price falls 15%)</div>
       <div><b>Decision</b>
         <div class="decision">
-          <span class="score-badge sb-go">Score 7 or more &rarr; suggest to my dad</span>
-          <span class="score-badge sb-watch">4 to 6 &rarr; keep on the watchlist</span>
-          <span class="score-badge sb-skip">3 or less &rarr; skip</span>
+          <span class="score-badge sb-go">Score 7 or more &rarr; share the research with my father for discussion</span>
+          <span class="score-badge sb-watch">4 to 6 &rarr; keep researching</span>
+          <span class="score-badge sb-skip">3 or less &rarr; drop the idea</span>
         </div>
       </div>
     </div>
 
     <div class="example prose">
-      <p><strong>Example.</strong> A stock trades at 80, with a 52-week high of 120 and low of 60. Its mid-range marker is (120 + 60) &divide; 2 = 90, so the expected upside is (90 &minus; 80) &divide; 80 = 12.5%. If it scores 8 out of 10, I would suggest putting in 8% of the portfolio, with a stop-loss at 80 &times; 0.85 = 68 and a review date six months out.</p>
-      <p style="margin-bottom:0">My next step is to track how well this score sorts good ideas from weak ones over the coming trades.</p>
+      <p><strong>Hypothetical example (not a real stock).</strong> A stock trades at 80, with a 52-week high of 120 and low of 60. Its mid-range marker is (120 + 60) &divide; 2 = 90, so the gap to the marker is (90 &minus; 80) &divide; 80 = 12.5%. If it scores 8 out of 10, the illustrative weight in a sample portfolio would be 8%, with a review level at 80 &times; 0.85 = 68 and a review date six months out. This only shows how the arithmetic works.</p>
+      <p style="margin-bottom:0">My next step is to test, on paper, how well this score sorts well-researched ideas from weak ones.</p>
     </div>
   </section>
 
   <section>
     <div class="takeaway">
       <h2>The big takeaway</h2>
-      <p>Investing well is less about finding one winning stock and more about good habits: spreading risk, planning exits, and being honest about whether a win came from skill or luck. What started as conversations with my dad became a way of thinking: look past the numbers, ask why, and learn from every outcome.</p>
+      <p>The biggest lesson for me is that good investing is less about finding one winning stock and more about good habits: spreading risk, planning exits, and being honest about whether a win came from skill or luck. What started as conversations with my dad became a way of thinking: look past the numbers, ask why, and learn from every outcome.</p>
+    </div>
+  </section>
+
+  <section id="disclaimer">
+    <div class="disclaimer prose">
+      <h2>Disclaimer</h2>
+      <ul>
+        <li><strong>I did not trade.</strong> I do not have a trading or brokerage account, and I did not buy or sell any securities. I did not place, manage or direct any orders.</li>
+        <li><strong>All investment decisions were my father&rsquo;s.</strong> The trades described on this page were made by my father, an adult, in his own account and with his own money. He decided independently whether and how to use my research, alongside his own judgement.</li>
+        <li><strong>This is not investment advice.</strong> Nothing on this page is a recommendation, tip or solicitation to buy, sell or hold any security, or to follow any strategy. I am a high school student, and I am not a registered investment adviser, research analyst or other financial professional. I do not offer advice or research to the public, and I have never received any payment for this work.</li>
+        <li><strong>Educational purpose only.</strong> This page describes a personal learning project. The &ldquo;Idea Score&rdquo;, formulas and examples are an untested learning exercise; the example uses made-up numbers, not a real stock.</li>
+        <li><strong>Past results do not predict future results.</strong> The results cover a small number of trades over a short period (about six months in 2024), are shown as percentages only, and may not be representative. Investing involves risk, including the loss of money.</li>
+        <li><strong>Accuracy.</strong> Figures come from my own Excel tracker and public market data, and may contain errors. Some charts are redrawn from my original charts and are approximate.</li>
+        <li><strong>No affiliation.</strong> Any company or index named here (such as the Nifty 50) is mentioned for research purposes only. I am not affiliated with, or endorsed by, any of them.</li>
+      </ul>
+      <p>Anyone considering an investment should do their own research and consult a qualified, registered financial professional.</p>
     </div>
   </section>
 
@@ -554,7 +579,7 @@
 
 <footer>
   <div class="wrap">
-    Ritvik's Stock Market Research &middot; Independent High School Research Project &middot; &copy; 2026 Ritvik. A personal learning project, not investment advice.
+    Ritvik's Stock Market Research &middot; Independent High School Research Project &middot; &copy; 2026 Ritvik. Educational research only. The author did not trade and does not give investment advice. See the <a href="#disclaimer">disclaimer</a>.
   </div>
 </footer>
 
