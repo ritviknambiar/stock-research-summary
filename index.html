@@ -1,0 +1,562 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Learning from the Stock Market</title>
+<meta name="description" content="An independent high school research project by Ritvik: what really moves stock prices, and what honest research and reflection teach about making better decisions.">
+<style>
+  :root {
+    --bg: #fbfaf7;
+    --surface: #ffffff;
+    --ink: #1c1d21;
+    --muted: #5d6070;
+    --line: #e4e2dc;
+    --accent: #1f3a63;
+    --accent-ink: #ffffff;
+    --accent-soft: #e7edf5;
+    --navy: #1f3a63;
+    --sky: #5b9bd5;
+    --gray: #9a9ca6;
+    --amber: #e0a800;
+    --red: #c0504d;
+    --green: #6aab46;
+    --amber-soft: #fbf1d6;
+    --red-soft: #f6e3e2;
+    --ok-soft: #e4ecf6;
+    --grid: #ecebe7;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #121317;
+      --surface: #1b1d22;
+      --ink: #ecebe7;
+      --muted: #a2a5b0;
+      --line: #2e3038;
+      --accent: #8db8e8;
+      --accent-ink: #0d1a24;
+      --accent-soft: #1d2a3a;
+      --navy: #7fa9db;
+      --sky: #b3d3f2;
+      --gray: #7d808b;
+      --amber: #f0c040;
+      --red: #e07a76;
+      --green: #8fcf6b;
+      --amber-soft: #352d14;
+      --red-soft: #3a2120;
+      --ok-soft: #1d2a3a;
+      --grid: #2a2c33;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #121317; --surface: #1b1d22; --ink: #ecebe7; --muted: #a2a5b0; --line: #2e3038;
+    --accent: #8db8e8; --accent-ink: #0d1a24; --accent-soft: #1d2a3a; --navy: #7fa9db; --sky: #b3d3f2;
+    --gray: #7d808b; --amber: #f0c040; --red: #e07a76; --green: #8fcf6b; --amber-soft: #352d14;
+    --red-soft: #3a2120; --ok-soft: #1d2a3a; --grid: #2a2c33;
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font: 17px/1.6 Georgia, "Iowan Old Style", "Times New Roman", serif;
+  }
+  .sans, h1, h2, h3, .stat, table, .eyebrow, nav, .caption, .legend, footer, .fig, .box, .formula, .score-badge {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Helvetica, Arial, sans-serif;
+  }
+  .wrap { max-width: 1040px; margin: 0 auto; padding: 0 20px; }
+  .prose { max-width: 760px; }
+  a { color: var(--accent); }
+
+  .topbar {
+    position: sticky; top: 0; z-index: 10;
+    background: color-mix(in srgb, var(--bg) 92%, transparent);
+    backdrop-filter: blur(6px);
+    border-bottom: 1px solid var(--line);
+  }
+  .topbar .wrap { display: flex; align-items: center; justify-content: space-between; gap: 12px; height: 56px; }
+  .brand { font-weight: 700; font-size: 16px; color: var(--ink); text-decoration: none; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Helvetica, Arial, sans-serif; }
+  nav { display: flex; gap: 18px; font-size: 14px; }
+  nav a { color: var(--muted); text-decoration: none; }
+  nav a:hover { color: var(--ink); }
+  @media (max-width: 760px) { nav { display: none; } }
+
+  header.hero { padding: 56px 0 30px; }
+  .eyebrow { font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+  h1 { font-size: clamp(36px, 6vw, 56px); line-height: 1.06; letter-spacing: -0.025em; margin: 10px 0 14px; }
+  .lede { font-size: 21px; color: var(--muted); margin: 0 0 18px; max-width: 720px; }
+  .byline { font-size: 15px; color: var(--muted); }
+
+  .stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin: 34px 0 8px; }
+  @media (min-width: 820px) { .stats { grid-template-columns: repeat(4, 1fr); } }
+  .stat { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 16px; }
+  .stat .num { font-size: 30px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.1; }
+  .stat .lbl { font-size: 13.5px; color: var(--muted); line-height: 1.45; margin-top: 6px; }
+
+  section { padding: 38px 0; border-top: 1px solid var(--line); }
+  h2 { font-size: 30px; letter-spacing: -0.02em; margin: 0 0 14px; }
+  h3 { font-size: 20px; letter-spacing: -0.01em; margin: 30px 0 8px; }
+  p { margin: 0 0 14px; }
+  .story p { font-size: 18px; }
+
+  .table-wrap { overflow-x: auto; margin: 14px 0 18px; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); }
+  table { border-collapse: collapse; width: 100%; font-size: 15px; }
+  th, td { text-align: left; padding: 11px 14px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  tr:last-child td { border-bottom: none; }
+  th { font-weight: 600; color: var(--muted); font-size: 13px; }
+  td.step { font-weight: 600; white-space: nowrap; }
+  td.pts { white-space: nowrap; font-weight: 600; }
+
+  figure { margin: 22px 0; }
+  .fig { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 18px 18px 14px; }
+  .fig-title { font-weight: 600; font-size: 15.5px; margin-bottom: 2px; }
+  .fig-sub { font-size: 13px; color: var(--muted); margin-bottom: 14px; }
+  .caption { font-size: 13.5px; color: var(--muted); margin-top: 10px; line-height: 1.5; }
+  .source { font-size: 12px; color: var(--muted); margin-top: 8px; }
+  svg { display: block; width: 100%; height: auto; overflow: visible; }
+  .chart-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .chart-scroll svg { min-width: 560px; }
+  svg text { fill: var(--muted); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Helvetica, Arial, sans-serif; }
+
+  .grid2 { display: grid; gap: 24px; }
+  @media (min-width: 820px) { .grid2 { grid-template-columns: 1fr 1.3fr; } }
+  .grid3 { display: grid; gap: 26px; }
+  @media (min-width: 900px) { .grid3 { grid-template-columns: 1fr 1fr 0.8fr; } }
+  .sub-title { font-weight: 600; font-size: 14px; margin-bottom: 10px; }
+
+  .hbar { display: grid; grid-template-columns: minmax(110px, 42%) 1fr; gap: 10px; align-items: center; margin-bottom: 7px; font-size: 13.5px; }
+  .hbar .l { text-align: right; line-height: 1.25; }
+  .hbar .l small { display: block; color: var(--muted); font-size: 11.5px; }
+  .hbar .t { display: flex; align-items: center; gap: 6px; }
+  .hbar .f { height: 20px; border-radius: 3px; min-width: 2px; }
+  .hbar .v { font-size: 12.5px; color: var(--muted); }
+
+  .vbars { display: flex; align-items: flex-end; gap: 14px; height: 180px; border-bottom: 1px solid var(--line); padding: 0 6px; }
+  .vbars .c { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; height: 100%; }
+  .vbars .v { font-size: 12.5px; color: var(--muted); margin-bottom: 4px; }
+  .vbars .f { width: 100%; max-width: 58px; border-radius: 3px 3px 0 0; }
+  .vlabels { display: flex; gap: 14px; padding: 6px 6px 0; }
+  .vlabels div { flex: 1; text-align: center; font-size: 12px; color: var(--muted); line-height: 1.3; }
+
+  .legend { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 12.5px; color: var(--muted); margin-top: 10px; }
+  .legend i { display: inline-block; width: 11px; height: 11px; border-radius: 2px; margin-right: 6px; vertical-align: -1px; }
+
+  .matrix { display: grid; grid-template-columns: 120px 1fr 1fr; gap: 6px; margin: 16px 0 10px; font-size: 14px; }
+  .matrix .h { font-weight: 600; color: var(--muted); font-size: 13px; padding: 6px 4px; }
+  .matrix .rh { font-weight: 600; font-size: 13.5px; padding: 12px 4px; display: flex; align-items: center; }
+  .matrix .cell { border-radius: 8px; padding: 12px 14px; line-height: 1.4; }
+  .matrix .cell b { font-size: 16px; margin-right: 4px; }
+  .cA { background: var(--ok-soft); }
+  .cB { background: var(--ok-soft); opacity: 0.85; }
+  .cC { background: var(--amber-soft); }
+  .cD { background: var(--red-soft); }
+  @media (max-width: 560px) {
+    .matrix { grid-template-columns: 1fr 1fr; }
+    .matrix .corner, .matrix .rh { display: none; }
+  }
+
+  .insight { border-left: 4px solid var(--navy); padding-left: 16px; margin-top: 30px; }
+  .insight h3 { margin-top: 0; }
+  .insight .tag { font-size: 12.5px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Helvetica, Arial, sans-serif; }
+
+  ol.learnings { padding-left: 0; list-style: none; counter-reset: l; display: grid; gap: 12px; }
+  @media (min-width: 820px) { ol.learnings { grid-template-columns: 1fr 1fr; } }
+  ol.learnings li { counter-increment: l; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 16px 18px 14px 56px; position: relative; font-size: 16px; }
+  ol.learnings li::before {
+    content: counter(l); position: absolute; left: 16px; top: 15px;
+    width: 26px; height: 26px; border-radius: 50%; background: var(--accent); color: var(--accent-ink);
+    font: 700 14px/26px -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Helvetica, Arial, sans-serif; text-align: center;
+  }
+  ol.learnings li strong { display: block; margin-bottom: 4px; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Helvetica, Arial, sans-serif; font-size: 15.5px; }
+
+  .formula { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 18px 20px; font-size: 15px; display: grid; gap: 10px; }
+  .formula div { line-height: 1.5; }
+  .formula b { color: var(--accent); }
+  .decision { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
+  .score-badge { font-size: 13px; font-weight: 600; padding: 4px 10px; border-radius: 999px; }
+  .sb-go { background: var(--ok-soft); color: var(--navy); }
+  .sb-watch { background: var(--amber-soft); color: var(--ink); }
+  .sb-skip { background: var(--red-soft); color: var(--ink); }
+
+  .example { background: var(--accent-soft); border-radius: 10px; padding: 16px 20px; margin-top: 16px; }
+
+  .takeaway { background: var(--accent); color: var(--accent-ink); border-radius: 12px; padding: 28px 28px 20px; margin-top: 8px; }
+  .takeaway h2 { color: var(--accent-ink); font-size: 24px; }
+  .takeaway p { font-size: 18px; }
+
+  footer { border-top: 1px solid var(--line); padding: 26px 0 40px; font-size: 13px; color: var(--muted); }
+
+  @media print {
+    .topbar { display: none; }
+    body { background: #fff; }
+    section, figure { break-inside: avoid-page; }
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="wrap">
+    <a class="brand" href="#top">Learning from the Stock Market</a>
+    <nav aria-label="Sections">
+      <a href="#research">Research</a>
+      <a href="#method">Method</a>
+      <a href="#findings">Findings</a>
+      <a href="#learnings">Learnings</a>
+      <a href="#formula">Formula</a>
+    </nav>
+  </div>
+</div>
+
+<main class="wrap" id="top">
+
+  <header class="hero">
+    <div class="eyebrow">Independent High School Research Project</div>
+    <h1>Learning from the Stock Market</h1>
+    <p class="lede">What really moves stock prices, and what can honest research and reflection teach me about making better decisions?</p>
+    <div class="byline">By Ritvik</div>
+
+    <div class="stats" aria-label="At a glance">
+      <div class="stat"><div class="num">42</div><div class="lbl">companies tracked across 5 sectors, plus a watchlist of 103</div></div>
+      <div class="stat"><div class="num">19</div><div class="lbl">trades my dad made using my analysis, plus 4 other holdings</div></div>
+      <div class="stat"><div class="num">13.4%</div><div class="lbl">typical pick return, vs 12.7% for the Nifty 50 over the same 6 months</div></div>
+      <div class="stat"><div class="num">4 of 23</div><div class="lbl">outcomes made money for the wrong reason</div></div>
+    </div>
+  </header>
+
+  <section class="story prose" aria-label="Introduction">
+    <p>My introduction to financial markets didn't begin in a classroom. It began through conversations with my father, who would explain how stock markets work and why prices change. What first looked like a world of numbers soon became a puzzle: why could a company's share price fall despite strong results, and why might investors react differently to the same economic news? I came to see that understanding markets meant understanding expectations, incentives and human behaviour, not just following prices.</p>
+    <p>Curiosity turned into exploration, and I started small. Instead of trading myself, I researched companies and shared my analysis with my dad as input for his own investment decisions. To organise this, I built an Excel evaluation tracker to follow market trends, record outcomes and look for patterns. Along the way I became interested in how expectations about future growth, interest rates and uncertainty shape valuations. Most importantly, I learned to question what the numbers appeared to suggest rather than accepting them at face value.</p>
+  </section>
+
+  <section id="research">
+    <div class="prose">
+      <h2>What I set out to research</h2>
+      <p>I wanted to understand what really moves stock prices, and to learn from real outcomes rather than from theory alone. My goal was never to beat the market. It was to become a more careful, more honest analyst, so that the inputs I gave my dad were better reasoned each time.</p>
+      <p>The question I kept coming back to was: <strong>when a stock went up or down, was it because my reasoning was right, or because of something else?</strong></p>
+    </div>
+  </section>
+
+  <section id="method">
+    <h2>How I did it</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Step</th><th>What I did</th></tr></thead>
+        <tbody>
+          <tr><td class="step">1. Choose</td><td>Built a focused list of 42 companies across 5 sectors (Railways, Technology, Mining &amp; Metals, Banking, Manufacturing), with a wider watchlist of 103 for future ideas.</td></tr>
+          <tr><td class="step">2. Track</td><td>Recorded each stock's price and 52-week high and low in my Excel evaluation tracker. I used the midpoint of that range as a simple &ldquo;fair price&rdquo; marker to judge whether a stock looked cheap or expensive compared with its recent past.</td></tr>
+          <tr><td class="step">3. Advise</td><td>Shared my analysis with my dad. Over about six months in 2024 he made 19 trades using my inputs, and I recorded each buy price, sell price and sale date.</td></tr>
+          <tr><td class="step">4. Compare</td><td>Measured each trade's return and used the Nifty 50, India's main market index, as a yardstick for how the market as a whole moved.</td></tr>
+          <tr><td class="step">5. Reflect</td><td>Looked back at every outcome to work out what actually moved the price, and what I would suggest differently next time.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <figure>
+      <div class="fig">
+        <div class="grid2">
+          <div>
+            <div class="sub-title">Final tracking list: 42 companies, 5 sectors</div>
+            <div class="hbar"><div class="l">Indian Railways</div><div class="t"><div class="f" style="width:50%;background:var(--navy)"></div><span class="v">9</span></div></div>
+            <div class="hbar"><div class="l">Technology</div><div class="t"><div class="f" style="width:44.4%;background:var(--navy)"></div><span class="v">8</span></div></div>
+            <div class="hbar"><div class="l">Mining &amp; Metals</div><div class="t"><div class="f" style="width:44.4%;background:var(--navy)"></div><span class="v">8</span></div></div>
+            <div class="hbar"><div class="l">Banking</div><div class="t"><div class="f" style="width:50%;background:var(--navy)"></div><span class="v">9</span></div></div>
+            <div class="hbar"><div class="l">Manufacturing</div><div class="t"><div class="f" style="width:44.4%;background:var(--navy)"></div><span class="v">8</span></div></div>
+          </div>
+          <div>
+            <div class="sub-title">Watchlist: 103 companies, 10 broad sectors</div>
+            <div class="hbar"><div class="l">Banking &amp; Finance</div><div class="t"><div class="f" style="width:100%;background:var(--sky)"></div><span class="v">18</span></div></div>
+            <div class="hbar"><div class="l">Manufacturing &amp; Industrials</div><div class="t"><div class="f" style="width:100%;background:var(--sky)"></div><span class="v">18</span></div></div>
+            <div class="hbar"><div class="l">Consumer</div><div class="t"><div class="f" style="width:83.3%;background:var(--sky)"></div><span class="v">15</span></div></div>
+            <div class="hbar"><div class="l">Railways &amp; Infra</div><div class="t"><div class="f" style="width:77.8%;background:var(--sky)"></div><span class="v">14</span></div></div>
+            <div class="hbar"><div class="l">Power &amp; Energy</div><div class="t"><div class="f" style="width:50%;background:var(--sky)"></div><span class="v">9</span></div></div>
+            <div class="hbar"><div class="l">Defence &amp; Aerospace</div><div class="t"><div class="f" style="width:50%;background:var(--sky)"></div><span class="v">9</span></div></div>
+            <div class="hbar"><div class="l">Technology</div><div class="t"><div class="f" style="width:38.9%;background:var(--sky)"></div><span class="v">7</span></div></div>
+            <div class="hbar"><div class="l">Chemicals &amp; Pharma</div><div class="t"><div class="f" style="width:33.3%;background:var(--sky)"></div><span class="v">6</span></div></div>
+            <div class="hbar"><div class="l">Metals &amp; Mining</div><div class="t"><div class="f" style="width:22.2%;background:var(--sky)"></div><span class="v">4</span></div></div>
+            <div class="hbar"><div class="l">Other</div><div class="t"><div class="f" style="width:16.7%;background:var(--sky)"></div><span class="v">3</span></div></div>
+          </div>
+        </div>
+        <div class="source">Source: my Excel evaluation tracker (2024 &ndash; May 2026).</div>
+      </div>
+      <figcaption class="caption">The companies I tracked: a focused list of 42 across five sectors, and a broader watchlist across ten.</figcaption>
+    </figure>
+
+    <h3>How I evaluated the results</h3>
+    <div class="prose">
+      <p>I used two lenses: one about money and one about reasoning.</p>
+      <p><strong>1. How did it compare with the market?</strong> I compared each trade's return with the Nifty 50 over the same period. I looked at both the typical trade (the median) and the return on all the money invested, because a large position counts more in the second measure.</p>
+      <p><strong>2. Was the idea right?</strong> For every outcome, I wrote down the original idea, what actually happened, and the main reason the price moved (company results, sector trend, company news, valuation, the wider economy, or hype). Then I placed each outcome in one of four boxes:</p>
+    </div>
+
+    <div class="matrix" role="table" aria-label="Four outcome boxes">
+      <div class="h corner"></div>
+      <div class="h">Good result</div>
+      <div class="h">Weak result</div>
+      <div class="rh">Idea was right</div>
+      <div class="cell cA"><b>A</b> the research worked</div>
+      <div class="cell cB"><b>B</b> right idea, but timing or other forces hurt</div>
+      <div class="rh">Idea was wrong</div>
+      <div class="cell cC"><b>C</b> made money, but for the wrong reason</div>
+      <div class="cell cD"><b>D</b> a real research mistake</div>
+    </div>
+    <p class="prose">This stopped me from confusing &ldquo;we made money&rdquo; with &ldquo;my analysis was good&rdquo;.</p>
+  </section>
+
+  <section id="findings">
+    <h2>What I found</h2>
+
+    <div class="insight">
+      <div class="tag">Insight 1</div>
+      <h3>Close to the market, but the money told a different story</h3>
+      <p class="prose">The typical trade returned 13.4%, close to the Nifty 50's 12.7% over the same six months. But the return on all the money invested was 9.6%, behind the market.</p>
+    </div>
+
+    <figure>
+      <div class="fig">
+        <div class="fig-title">6-month view (Mar&ndash;Aug 2024): trades based on my analysis vs Nifty 50</div>
+        <div class="fig-sub">Return (%), cumulative</div>
+        <div class="chart-scroll"><svg viewBox="0 0 760 330" role="img" aria-label="Line chart. Trades based on my analysis: 0% at end of February and March, 14.4% in April and May, 15.8% in June, 15.6% in July, 9.6% in August. Nifty 50: 0%, 1.6%, 2.8%, 2.5%, 9.2%, 13.5%, 12.7%. Median closed trade 13.4%.">
+          <!-- plot area x: 60..620, y: 20..280 ; y range -1..17 -->
+          <g stroke="var(--grid)" stroke-width="1">
+            <line x1="60" x2="620" y1="265.6" y2="265.6"/>
+            <line x1="60" x2="620" y1="193.3" y2="193.3"/>
+            <line x1="60" x2="620" y1="121.1" y2="121.1"/>
+            <line x1="60" x2="620" y1="48.9" y2="48.9"/>
+          </g>
+          <line x1="60" x2="620" y1="265.6" y2="265.6" stroke="var(--line)" stroke-width="1.5"/>
+          <g font-size="12" text-anchor="end">
+            <text x="52" y="269.6">0%</text>
+            <text x="52" y="197.3">5%</text>
+            <text x="52" y="125.1">10%</text>
+            <text x="52" y="52.9">15%</text>
+          </g>
+          <g font-size="12" text-anchor="middle">
+            <text x="80" y="306">29 Feb</text>
+            <text x="166.7" y="306">Mar</text>
+            <text x="253.3" y="306">Apr</text>
+            <text x="340" y="306">May</text>
+            <text x="426.7" y="306">Jun</text>
+            <text x="513.3" y="306">Jul</text>
+            <text x="600" y="306">Aug</text>
+          </g>
+          <!-- y(v) = 265.6 - v*14.444 -->
+          <polyline fill="none" stroke="var(--gray)" stroke-width="3" stroke-linejoin="round"
+            points="80,265.6 166.7,243.2 253.3,225.2 340,229.5 426.7,132.7 513.3,70.6 600,82.2"/>
+          <g fill="var(--gray)">
+            <circle cx="80" cy="265.6" r="4.5"/><circle cx="166.7" cy="243.2" r="4.5"/><circle cx="253.3" cy="225.2" r="4.5"/>
+            <circle cx="340" cy="229.5" r="4.5"/><circle cx="426.7" cy="132.7" r="4.5"/><circle cx="513.3" cy="70.6" r="4.5"/><circle cx="600" cy="82.2" r="4.5"/>
+          </g>
+          <polyline fill="none" stroke="var(--navy)" stroke-width="3.5" stroke-linejoin="round"
+            points="80,265.6 166.7,265.6 253.3,57.6 340,57.6 426.7,38.1 513.3,40.3 600,126.9"/>
+          <g fill="var(--navy)">
+            <circle cx="80" cy="265.6" r="5"/><circle cx="166.7" cy="265.6" r="5"/><circle cx="253.3" cy="57.6" r="5"/>
+            <circle cx="340" cy="57.6" r="5"/><circle cx="426.7" cy="38.1" r="5"/><circle cx="513.3" cy="40.3" r="5"/><circle cx="600" cy="126.9" r="5"/>
+          </g>
+          <rect x="594" y="71.1" width="12" height="12" transform="rotate(45 600 77.1)" fill="var(--sky)"/>
+          <text x="123" y="281" font-size="11" text-anchor="middle">No trades closed yet</text>
+          <g font-size="13" font-weight="600">
+            <text x="632" y="70" style="fill:var(--sky)">Median 13.4%</text>
+            <text x="632" y="92" style="fill:var(--gray)">Nifty 12.7%</text>
+            <text x="632" y="131" style="fill:var(--navy)">Closed 9.6%</text>
+          </g>
+        </svg></div>
+        <div class="legend">
+          <span><i style="background:var(--navy)"></i>Trades based on my analysis (gain &divide; money invested, cumulative)</span>
+          <span><i style="background:var(--gray)"></i>Nifty 50 (change since 29 Feb 2024)</span>
+          <span><i style="background:var(--sky)"></i>Typical (median) closed trade</span>
+        </div>
+        <div class="source">Source: my Excel evaluation tracker (2024 &ndash; May 2026).</div>
+      </div>
+      <figcaption class="caption">Trades based on my analysis compared with the Nifty 50 over six months in 2024. A mixed result: the typical trade roughly matched the Nifty, but total money invested lagged it. Several unsold holdings were at a loss.</figcaption>
+    </figure>
+
+    <div class="insight">
+      <div class="tag">Insight 2</div>
+      <h3>One big position held everything back</h3>
+      <p class="prose">Most trades used a small share of the money, but one stock took 39% of it and returned only 2.5%. Without that one position, the overall return would have been about 14%. Owning 19 stocks looked diversified, but the money was not.</p>
+    </div>
+
+    <figure>
+      <div class="fig">
+        <div class="fig-title">Position size vs return: concentration was the biggest drag</div>
+        <div class="fig-sub">Each dot is one of the 19 trades</div>
+        <div class="chart-scroll"><svg viewBox="0 0 760 330" role="img" aria-label="Scatter chart of 19 trades. Most used under 7% of the money, with returns from about 5% to 49%. One position used 12% and returned about 12%. The largest position used 39% of the money and returned only 2.5%.">
+          <!-- x: 0..40% -> 70..720 ; y: 0..52% -> 280..20 -->
+          <g stroke="var(--grid)" stroke-width="1">
+            <line x1="70" x2="720" y1="230" y2="230"/>
+            <line x1="70" x2="720" y1="180" y2="180"/>
+            <line x1="70" x2="720" y1="130" y2="130"/>
+            <line x1="70" x2="720" y1="80" y2="80"/>
+            <line x1="70" x2="720" y1="30" y2="30"/>
+          </g>
+          <line x1="70" x2="720" y1="280" y2="280" stroke="var(--line)" stroke-width="1.5"/>
+          <g font-size="12" text-anchor="end">
+            <text x="62" y="284">0%</text><text x="62" y="234">10%</text><text x="62" y="184">20%</text>
+            <text x="62" y="134">30%</text><text x="62" y="84">40%</text><text x="62" y="34">50%</text>
+          </g>
+          <g font-size="12" text-anchor="middle">
+            <text x="70" y="300">0%</text><text x="151.3" y="300">5%</text><text x="232.5" y="300">10%</text>
+            <text x="313.8" y="300">15%</text><text x="395" y="300">20%</text><text x="476.3" y="300">25%</text>
+            <text x="557.5" y="300">30%</text><text x="638.8" y="300">35%</text><text x="720" y="300">40%</text>
+          </g>
+          <text x="395" y="324" font-size="12.5" text-anchor="middle">Share of total money invested</text>
+          <text x="16" y="150" font-size="12.5" text-anchor="middle" transform="rotate(-90 16 150)">Return on cost</text>
+          <!-- reference lines: median 13.4 -> y 213 ; nifty 12.7 -> y 216.5 -->
+          <line x1="70" x2="720" y1="213" y2="213" stroke="var(--sky)" stroke-width="1.5" stroke-dasharray="2 4"/>
+          <line x1="70" x2="720" y1="216.5" y2="216.5" stroke="var(--gray)" stroke-width="1.5" stroke-dasharray="7 5"/>
+          <text x="716" y="207" font-size="11.5" text-anchor="end" style="fill:var(--sky)">Median trade 13.4%</text>
+          <text x="716" y="231" font-size="11.5" text-anchor="end">Nifty 50 12.7%</text>
+          <g fill="var(--navy)" stroke="var(--surface)" stroke-width="1.5">
+            <circle cx="83.8" cy="157.5" r="6.5"/>
+            <circle cx="87.9" cy="34" r="6.5"/>
+            <circle cx="91.9" cy="166" r="6.5"/>
+            <circle cx="93.6" cy="158" r="6.5"/>
+            <circle cx="97.6" cy="125" r="6.5"/>
+            <circle cx="99.3" cy="184" r="6.5"/>
+            <circle cx="107.4" cy="213" r="6.5"/>
+            <circle cx="109" cy="150" r="6.5"/>
+            <circle cx="109" cy="205" r="6.5"/>
+            <circle cx="112.3" cy="235.5" r="6.5"/>
+            <circle cx="113.9" cy="241.5" r="6.5"/>
+            <circle cx="117.1" cy="221" r="6.5"/>
+            <circle cx="130.1" cy="213.5" r="6.5"/>
+            <circle cx="145.6" cy="200" r="6.5"/>
+            <circle cx="149.6" cy="254.5" r="6.5"/>
+            <circle cx="156.1" cy="229" r="6.5"/>
+            <circle cx="179.7" cy="226" r="6.5"/>
+            <circle cx="271.5" cy="218" r="6.5"/>
+            <circle cx="703.8" cy="267.5" r="8" fill="var(--red)"/>
+          </g>
+          <text x="520" y="150" font-size="13" font-weight="600" style="fill:var(--red)">Largest position: 39% of the money,</text>
+          <text x="520" y="168" font-size="13" font-weight="600" style="fill:var(--red)">only 2.5% return</text>
+          <line x1="610" y1="178" x2="694" y2="258" stroke="var(--red)" stroke-width="1.5"/>
+        </svg></div>
+        <div class="source">Source: my Excel evaluation tracker (2024 &ndash; May 2026). Dot positions redrawn from the original chart.</div>
+      </div>
+      <figcaption class="caption">Each dot is one trade: how much of the money it used, against its return.</figcaption>
+    </figure>
+
+    <div class="insight">
+      <div class="tag">Insight 3</div>
+      <h3>Making money and being right are not the same</h3>
+      <p class="prose">Nine outcomes were &ldquo;A&rdquo;: the idea was right and it paid off. But four were &ldquo;C&rdquo;: the stock rose because of rumours or hype, not my reasoning, and those trades earned about as much on average (21.0%) as the right-reason wins (20.7%). Six were real mistakes, including a loss on Lucid, a U.S. electric-vehicle company. I also noticed that four stocks kept rising strongly after they were sold.</p>
+    </div>
+
+    <figure>
+      <div class="fig">
+        <div class="fig-title">Reason patterns: what explains each outcome? (23 stocks)</div>
+        <div class="fig-sub">&nbsp;</div>
+        <div class="grid3">
+          <div>
+            <div class="sub-title">1. Was my idea right?</div>
+            <div class="hbar"><div class="l">A &middot; Idea right<small>good result</small></div><div class="t"><div class="f" style="width:100%;background:var(--navy)"></div><span class="v">9</span></div></div>
+            <div class="hbar"><div class="l">B &middot; Idea right<small>weak result</small></div><div class="t"><div class="f" style="width:33.3%;background:var(--sky)"></div><span class="v">3</span></div></div>
+            <div class="hbar"><div class="l">C &middot; Idea wrong<small>still made money</small></div><div class="t"><div class="f" style="width:44.4%;background:var(--amber)"></div><span class="v">4</span></div></div>
+            <div class="hbar"><div class="l">D &middot; Idea wrong<small>weak result</small></div><div class="t"><div class="f" style="width:66.7%;background:var(--red)"></div><span class="v">6</span></div></div>
+            <div class="hbar"><div class="l">Not sure</div><div class="t"><div class="f" style="width:11.1%;background:var(--gray)"></div><span class="v">1</span></div></div>
+          </div>
+          <div>
+            <div class="sub-title">2. What really moved the price?</div>
+            <div class="hbar"><div class="l">Sector trend<small>whole industry moved</small></div><div class="t"><div class="f" style="width:100%;background:var(--navy)"></div><span class="v">6</span></div></div>
+            <div class="hbar"><div class="l">Company results<small>sales, profit, debt</small></div><div class="t"><div class="f" style="width:83.3%;background:var(--navy)"></div><span class="v">5</span></div></div>
+            <div class="hbar"><div class="l">Hype or rumours</div><div class="t"><div class="f" style="width:83.3%;background:var(--navy)"></div><span class="v">5</span></div></div>
+            <div class="hbar"><div class="l">Price was cheap<small>or expensive</small></div><div class="t"><div class="f" style="width:50%;background:var(--navy)"></div><span class="v">3</span></div></div>
+            <div class="hbar"><div class="l">Company news<small>fundraise, deal</small></div><div class="t"><div class="f" style="width:16.7%;background:var(--navy)"></div><span class="v">1</span></div></div>
+            <div class="hbar"><div class="l">Big economy<small>rates, world demand</small></div><div class="t"><div class="f" style="width:16.7%;background:var(--navy)"></div><span class="v">1</span></div></div>
+            <div class="hbar"><div class="l">Couldn't find<small>a reason</small></div><div class="t"><div class="f" style="width:33.3%;background:var(--gray)"></div><span class="v">2</span></div></div>
+          </div>
+          <div>
+            <div class="sub-title">3. After selling (closed trades)</div>
+            <div class="vbars">
+              <div class="c"><div class="v">4</div><div class="f" style="height:40%;background:var(--amber)"></div></div>
+              <div class="c"><div class="v">5</div><div class="f" style="height:50%;background:var(--gray)"></div></div>
+              <div class="c"><div class="v">10</div><div class="f" style="height:100%;background:var(--green)"></div></div>
+            </div>
+            <div class="vlabels">
+              <div>Kept rising &gt;10% after I sold</div>
+              <div>Roughly flat</div>
+              <div>Fell &gt;5% after I sold</div>
+            </div>
+          </div>
+        </div>
+        <div class="source">Source: my Excel evaluation tracker (2024 &ndash; May 2026).</div>
+      </div>
+      <figcaption class="caption">What explained each outcome: was the idea right, what really moved the price, and what happened after selling. The amber bars mark the less common patterns: making money for the wrong reason, and selling too early.</figcaption>
+    </figure>
+  </section>
+
+  <section id="learnings">
+    <h2>My learnings</h2>
+    <p class="prose">These are my working hypotheses from looking back at the results:</p>
+    <ol class="learnings">
+      <li><strong>Diversify the money, not just the number of stocks.</strong>Keep any single stock to a small share (around 10%) of the portfolio, and spread across sectors, so one mistake cannot sink everything.</li>
+      <li><strong>Set a stop-loss before buying.</strong>Decide in advance the price at which to sell or re-check a falling stock (for example 15% below the buying price), instead of hoping it comes back. Some holdings kept falling with no plan to act.</li>
+      <li><strong>Plan the exit, not just the entry.</strong>Set a target price and a review date when buying. Several stocks rose a lot after they were sold, and others fell sharply afterwards; a plan makes this less of a guess.</li>
+      <li><strong>A profit does not prove the research was right.</strong>Ask why a stock moved. Gains from rumours or hype do not repeat reliably.</li>
+      <li><strong>Watch the whole sector, not just the company.</strong>Sector trends drove more of the results than any other single reason; whole groups of government-owned banks, power and railway stocks rose together.</li>
+      <li><strong>Write the idea down before buying.</strong>A written reason makes it possible to judge honestly afterwards, and protects against remembering being more right than I was.</li>
+    </ol>
+  </section>
+
+  <section id="formula">
+    <h2>Turning my learnings into a simple formula</h2>
+    <p class="prose">To make my inputs to my dad more consistent, I turned these learnings into a simple checklist score and a few rules that go into my Excel evaluation tracker. It does not predict the future exactly; it helps decide which ideas deserve attention, how much to put in, and when to act.</p>
+
+    <h3>Step 1: Idea Score (out of 10)</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Check</th><th>Points</th><th>Learning behind it</th></tr></thead>
+        <tbody>
+          <tr><td>I wrote a clear reason, backed by company results</td><td class="pts">0&ndash;3</td><td>Write the idea down; profit is not proof</td></tr>
+          <tr><td>The sector trend is supportive</td><td class="pts">0&ndash;2</td><td>Watch the whole sector</td></tr>
+          <tr><td>Price is below its mid-range marker (2), near it (1), or well above (0)</td><td class="pts">0&ndash;2</td><td>Cheap prices tended to move back toward the middle</td></tr>
+          <tr><td>The story is not driven by rumours or hype</td><td class="pts">0&ndash;2</td><td>Hype gains do not repeat</td></tr>
+          <tr><td>A target price and review date are set</td><td class="pts">0&ndash;1</td><td>Plan the exit</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Step 2: The rules</h3>
+    <div class="formula">
+      <div><b>Expected upside</b> = (Mid-range marker &minus; Current price) &divide; Current price</div>
+      <div><b>Position size</b> = (Idea Score &divide; 10) &times; 10% of the portfolio</div>
+      <div><b>Stop-loss</b> = Buying price &times; 0.85 (sell or re-check if it falls 15%)</div>
+      <div><b>Decision</b>
+        <div class="decision">
+          <span class="score-badge sb-go">Score 7 or more &rarr; suggest to my dad</span>
+          <span class="score-badge sb-watch">4 to 6 &rarr; keep on the watchlist</span>
+          <span class="score-badge sb-skip">3 or less &rarr; skip</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="example prose">
+      <p><strong>Example.</strong> A stock trades at 80, with a 52-week high of 120 and low of 60. Its mid-range marker is (120 + 60) &divide; 2 = 90, so the expected upside is (90 &minus; 80) &divide; 80 = 12.5%. If it scores 8 out of 10, I would suggest putting in 8% of the portfolio, with a stop-loss at 80 &times; 0.85 = 68 and a review date six months out.</p>
+      <p style="margin-bottom:0">My next step is to track how well this score sorts good ideas from weak ones over the coming trades.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="takeaway">
+      <h2>The big takeaway</h2>
+      <p>Investing well is less about finding one winning stock and more about good habits: spreading risk, planning exits, and being honest about whether a win came from skill or luck. What started as conversations with my dad became a way of thinking: look past the numbers, ask why, and learn from every outcome.</p>
+    </div>
+  </section>
+
+  <section id="author">
+    <h2>Author</h2>
+    <p><strong>Ritvik</strong><br>Independent High School Research Project</p>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    Ritvik's Stock Market Research &middot; Independent High School Research Project &middot; &copy; 2026 Ritvik. A personal learning project, not investment advice.
+  </div>
+</footer>
+
+</body>
+</html>
